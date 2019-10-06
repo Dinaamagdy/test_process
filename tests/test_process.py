@@ -143,6 +143,7 @@ class PROCESS(BaseTest):
             self.info("Use getPidsByPort to get PID, should succeed.")
             process_pid = j.sal.process.getPidsByPort(PT)
             self.assertEqual(PID, process_pid)
+        output, error = self.os_command("kill -9 {} ".format(PID))
 
     def test06_getDefunctProcesses(self):
         """TC340
@@ -169,15 +170,10 @@ class PROCESS(BaseTest):
         Test case to test get  processes pids by  specific filter. 
 
         **Test scenario**
-        #. Stat process [p1] with python.
         #. Get all processes PIDs which using  python[PIDs_1].
         #. Use getPidsByFilter method  to get processess PIDs which using python[PIDs_2].
         #. Compare PIDs_1 and PIDs_2 should be same .
         """
-
-        self.info("Stat process [p1] with python.")
-        output, error = self.os_command("tmux  new -d -s {} 'python -m SimpleHTTPServer' ".format(self.rand_string()))
-
         self.info("Get all processes PIDs which using  python[PIDs_1]")
         output, error = self.os_command(
             " ps -aux | grep -v -e grep -e tmux| grep {} | awk '{{print $2}}'".format("python")
@@ -254,6 +250,8 @@ class PROCESS(BaseTest):
 
         self.info("Use getProcessPidsFromUser to get process pid [PID], Check that it returs right PID.")
         self.assertIn(PID, j.sal.process.getProcessPidsFromUser(user))
+
+        output, error = self.os_command("kill -9 {} ".format(PID))
 
     def test10_isPidAlive(self):
         """ 
@@ -334,4 +332,4 @@ class PROCESS(BaseTest):
         else:
             self.assertIn(PID_1, output.decode())
             self.assertNotIn(PID_2, output.decode())
-
+            output, error = self.os_command("kill -9 {} ".format(PID_1))
