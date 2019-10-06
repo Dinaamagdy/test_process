@@ -46,7 +46,7 @@ class PROCESS(BaseTest):
         self.info("Start process [p1], get its pid[PID1].")
         output, error = self.os_command("tmux  new -d -s {} 'python -m SimpleHTTPServer'".format(self.rand_string()))
         output, error = self.os_command(
-            " ps -aux | grep -v -e tmux -e  grep  | grep {} | awk '{print $2}'".format("SimpleHTTPServer")
+            " ps -aux | grep -v -e tmux -e  grep  | grep {} | awk  '{{print $2}}'".format("SimpleHTTPServer")
         )
         PID_1 = int(output.decode())
 
@@ -56,7 +56,7 @@ class PROCESS(BaseTest):
         self.info("Start another process [p2], get its pid[PID2].")
         output, error = self.os_command("tmux  new -d -s {} 'tail -f /dev/null'".format(self.rand_string()))
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2}'".format("tail -f")
+            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("tail -f")
         )
         PID_2 = int(output.decode())
 
@@ -84,11 +84,11 @@ class PROCESS(BaseTest):
         output, error = self.os_command("tmux  new -d -s {} 'python -m SimpleHTTPServer'".format(self.rand_string()))
 
         self.info("Use checkProcessRunning  method with process [P1], should True.")
-        self.assertTrue(j.sal.process.heckProcessRunning("SimpleHTTPServer"))
+        self.assertTrue(j.sal.process.checkProcessRunning("SimpleHTTPServer"))
 
         self.info("Stop  process [p1].")
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux  | grep {} | awk '{print $2}'".format("SimpleHTTPServer")
+            " ps -aux | grep -v -e grep -e tmux  | grep {} | awk '{{print $2}}'".format("SimpleHTTPServer")
         )
         PID = int(output.decode())
         output, error = self.os_command("kill-9 {}".format(PID))
@@ -107,7 +107,7 @@ class PROCESS(BaseTest):
         process = "tmux  new -d -s {} 'python -m SimpleHTTPServer'".format(self.rand_string())
         j.sal.process.execute(process)
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2}'".format("SimpleHTTPServer")
+            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("SimpleHTTPServer")
         )
         self.assertTrue(output)
         PID = int(output.decode())
@@ -132,7 +132,7 @@ class PROCESS(BaseTest):
         output, error = self.os_command("tmux  new -d -s {} 'python -m {} {}' ".format(self.rand_string(), P, PT))
 
         self.info("Get process [P] Pid.")
-        output, error = self.os_command(" ps -aux | grep -v grep -e tmux | grep {} | awk '{print $2}'".format(P))
+        output, error = self.os_command(" ps -aux | grep -v grep -e tmux | grep {} | awk '{{print $2}}'".format(P))
         PID = int(output.decode())
 
         if result_type == "process":
@@ -180,7 +180,7 @@ class PROCESS(BaseTest):
 
         self.info("Get all processes PIDs which using  python[PIDs_1]")
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux| grep {} | awk '{print $2}'".format("python")
+            " ps -aux | grep -v -e grep -e tmux| grep {} | awk '{{print $2}}'".format("python")
         )
         PIDs_1 = output.decode()
 
@@ -205,7 +205,7 @@ class PROCESS(BaseTest):
         self.info("Stat process [p1] with python.")
         output, error = self.os_command("tmux  new -d -s {} 'python -m SimpleHTTPServer' ".format(self.rand_string()))
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2}'".format("SimpleHTTPServer")
+            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("SimpleHTTPServer")
         )
         PID = output.decode()
 
@@ -219,7 +219,7 @@ class PROCESS(BaseTest):
         self.info("kill the process [P] using process object, check it works sucessfuly.")
         process_object.kill()
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2}'".format("SimpleHTTPServer")
+            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("SimpleHTTPServer")
         )
         self.assertTrue(output.decode())
         time.sleep(30)
@@ -270,7 +270,7 @@ class PROCESS(BaseTest):
         P = "python -m SimpleHTTPServer"
         output, error = self.os_command("tmux  new -d -s {} '{}'  ".format(self.rand_string(), P))
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2 }'".format("SimpleHTTPServer")
+            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("SimpleHTTPServer")
         )
         PID = output.decode()
 
@@ -300,7 +300,7 @@ class PROCESS(BaseTest):
         self.info("Start process [p1] .")
         P1 = "tail -f /dev/null"
         output, error = self.os_command("tmux  new -d -s {} '{}'  ".format(self.rand_string(), P1))
-        output, error = self.os_command(" ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2 }'".format(P1))
+        output, error = self.os_command(" ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format(P1))
         PID_1 = output.decode()
 
         self.info("Create new user.")
@@ -310,7 +310,7 @@ class PROCESS(BaseTest):
         self.info("Start process [P2] with new user , gets its PID2")
         P2 = "tail -f /dev/zero"
         output, error = self.os_command("tmux  new -d -s {} 'sudo -u {} {}'  ".format(self.rand_string(), new_user, P2))
-        output, error = self.os_command(" ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2 }'".format(P1))
+        output, error = self.os_command(" ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format(P1))
         PID_2 = output.decode()
 
         self.info("kill the process using {}".format(filter))
@@ -327,7 +327,7 @@ class PROCESS(BaseTest):
 
         self.info("Check that processes killed successfully.")
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{print $2 }'".format("tail")
+            " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("tail")
         )
         if filter == "killall":
             self.assertFalse(output.decode())
