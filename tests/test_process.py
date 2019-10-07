@@ -13,23 +13,22 @@ class PROCESS(BaseTest):
         Test case to check spesific command installed or not.
 
         **Test scenario**
-        #. Uninstall vim.
-        #. Use CheckInstalled method to check that vim uninstalled .
-        #. Install vim again.
-        #. Use CheckInstalled method to check that vim installed .
-
+        #. Use CheckInstalled method to check that curl installed .
+        #. uninstall curl.
+        #. Use CheckInstalled method to check that curl uninstalled .
+        #. Install curl again.
         """
-        self.info(" Uninstall vim")
-        output, error = self.os_command("apt-get remove vim -y")
+        self.info("Use CheckInstalled method to check that curl installed.")
+        self.assertTrue(j.sal.process.checkInstalled("curl"))
 
-        self.info(" Use CheckInstalled method to check that vim uninstalled .")
-        self.assertFalse(j.sal.process.checkInstalled("vim"))
+        self.info(" uninstall curl.")
+        output, error = self.os_command("apt-get remove curl -y")
 
-        self.info("Install vim again.")
-        output, error = self.os_command("apt-get update -y & apt-get istall vim -y")
+        self.info("Use CheckInstalled method to check that curl uninstalled .")
+        self.assertFalse(j.sal.process.checkInstalled("curl"))
 
-        self.info(" Use CheckInstalled method to check that vim installed .")
-        self.assertTrue(j.sal.process.checkInstalled("vim"))
+        self.info("Install curl again.")
+        output, error = self.os_command("apt-get update -y & apt-get install curl -y")s
 
     def test02_checkProcessForPid(self):
         """TC340
