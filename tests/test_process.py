@@ -9,7 +9,7 @@ class PROCESS(BaseTest):
         pass
 
     def test01_checkInstalled(self):
-        """TC340
+        """TC401
         Test case to check spesific command installed or not.
 
         **Test scenario**
@@ -23,7 +23,7 @@ class PROCESS(BaseTest):
         self.assertFalse(j.sal.process.checkInstalled("nodejs"))
 
     def test02_checkProcessForPid(self):
-        """TC340
+        """TC402
         Test case to test checkProcessForPid  method 
 
         **Test scenario**
@@ -62,7 +62,7 @@ class PROCESS(BaseTest):
         self.assertEqual(j.sal.process.checkProcessForPid(PID_1, "python"), 1)
 
     def test03_checkProcessRunning(self):
-        """TC340
+        """TC403
         Test case to test checkProcessRunning  method 
 
         **Test scenario**
@@ -88,7 +88,7 @@ class PROCESS(BaseTest):
         self.assertFalse(j.sal.process.checkProcessRunning("SimpleHTTPServer"))
 
     def test04_execute_process(self):
-        """TC340
+        """TC404
         Test case to test process method 
 
         **Test scenario**
@@ -106,7 +106,7 @@ class PROCESS(BaseTest):
 
     @parameterized.expand(["process", "pids"])
     def test05_getByPort(self, result_type):
-        """TC340
+        """TC405
         Test case to test get  process or pids by port methods.
 
         **Test scenario**
@@ -125,7 +125,7 @@ class PROCESS(BaseTest):
         self.info("Get process [P] Pid.")
         output, error = self.os_command(" ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format(P))
         PID = int(output.decode())
-
+        time.sleep(30)
         if result_type == "process":
             self.info("Use getProcessByPort to get P, should succeed.")
             process = j.sal.process.getProcessByPort(PT)
@@ -137,7 +137,7 @@ class PROCESS(BaseTest):
         output, error = self.os_command("kill -9 {} ".format(PID))
 
     def test06_getDefunctProcesses(self):
-        """TC340
+        """TC406
         Test case to test get  process methods
         **Test scenario**
         #. Get zombie processes list [z1] by ps -aux.
@@ -156,7 +156,7 @@ class PROCESS(BaseTest):
         self.assertEqual(z1, z2)
 
     def test07_getPidsByFilter(self):
-        """TC341
+        """TC407
         Test case to test get  processes pids by  specific filter. 
 
         **Test scenario**
@@ -175,7 +175,7 @@ class PROCESS(BaseTest):
         self.assertEqual(len(PIDS_1), len(PIDS_2))
 
     def test08_getProcessObject(self):
-        """ 
+        """ TC408
         Test case to test getProcessObject. 
 
         **Test scenario**
@@ -214,7 +214,7 @@ class PROCESS(BaseTest):
 
     @unittest.skip("https://github.com/threefoldtech/jumpscaleX_core/issues/122")
     def test09_getProcessPid_and_getProcessPidsFromUser(self):
-        """ 
+        """ TC 409
         Test case to test getProcessPid. 
 
         **Test scenario**
@@ -242,7 +242,7 @@ class PROCESS(BaseTest):
         output, error = self.os_command("kill -9 {} ".format(PID))
 
     def test10_isPidAlive(self):
-        """ 
+        """TC410
         Test case to test isPidAlive. 
 
         **Test scenario**
@@ -272,7 +272,7 @@ class PROCESS(BaseTest):
 
     @parameterized.expand(["kill", "killProcessByName", "killUserProcesses", "killall"])
     def test11_kill_process(self, filter):
-        """ 
+        """TC411
         Test case to test all kill process methods.
         **Test scenario**
         #. Strat process [P1], gets its PID1 .
