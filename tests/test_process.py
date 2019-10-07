@@ -156,7 +156,7 @@ class PROCESS(BaseTest):
 
         self.info("Get zombie processes list [z1] by ps -aux")
         output, error = self.os_command("ps aux | awk '{{ print $8 " " $2 }}' | grep -w Z ")
-        z1 = output.decode()
+        z1 = output.decode().splitlines()
 
         self.info("Get zombie processes list [z2] by getDefunctProcesses ")
         z2 = j.sal.process.getDefunctProcesses()
@@ -319,7 +319,7 @@ class PROCESS(BaseTest):
             j.sal.process.kill(PID_1)
 
         elif filter == "killProcessByName":
-            j.sal.process.killProcessByName("/dev/zero")
+            j.sal.process.killProcessByName("/dev/{}".format(new_file))
 
         elif filter == "killUserProcesses":
             j.sal.process.killUserProcesses(new_user)
@@ -333,6 +333,6 @@ class PROCESS(BaseTest):
         if filter == "killall":
             self.assertFalse(output.decode())
         else:
-            self.assertIn(PID_1, output.decode())
-            self.assertNotIn(PID_2, output.decode())
+            self.assertIn(PID_1, output.decode().splitlines())
+            self.assertNotIn(PID_2, output.decode().splitlines())
             output, error = self.os_command("kill -9 {} ".format(PID_1))
