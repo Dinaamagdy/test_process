@@ -14,21 +14,13 @@ class PROCESS(BaseTest):
 
         **Test scenario**
         #. Use CheckInstalled method to check that curl installed .
-        #. uninstall curl.
-        #. Use CheckInstalled method to check that curl uninstalled .
-        #. Install curl again.
+        #. Use CheckInstalled method to check that nodejs uninstalled .
         """
         self.info("Use CheckInstalled method to check that curl installed.")
         self.assertTrue(j.sal.process.checkInstalled("curl"))
 
-        self.info(" uninstall curl.")
-        output, error = self.os_command("apt-get remove curl -y")
-
-        self.info("Use CheckInstalled method to check that curl uninstalled .")
-        self.assertFalse(j.sal.process.checkInstalled("curl"))
-
-        self.info("Install curl again.")
-        output, error = self.os_command("apt-get update -y & apt-get install curl -y")s
+        self.info("Use CheckInstalled method to check that nodejs uninstalled .")
+        self.assertFalse(j.sal.process.checkInstalled("nodejs"))
 
     def test02_checkProcessForPid(self):
         """TC340
