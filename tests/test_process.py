@@ -205,7 +205,7 @@ class PROCESS(BaseTest):
         output, error = self.os_command(
             " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("SimpleHTTPServer")
         )
-        self.assertTrue(output.decode())
+        self.assertFalse(output.decode())
         time.sleep(30)
 
         self.info("Try to get object of this process again,  should fail .")
@@ -267,6 +267,7 @@ class PROCESS(BaseTest):
         output, error = self.os_command("kill -9 {}".format(PID))
 
         self.info("Use isPidAlive , should return False ")
+        time.sleep(30)
         self.assertFalse(j.sal.process.isPidAlive(PID))
 
     @parameterized.expand(["kill", "killProcessByName", "killUserProcesses", "killall"])
@@ -298,7 +299,7 @@ class PROCESS(BaseTest):
         self.info("Start process [P2] with new user , gets its PID2")
         new_file = self.rand_string()
         output, error = self.os_command("touch /home/{}".format(new_file))
-        P2 = "tail -f /root/{}".format(new_file)
+        P2 = "tail -f /home/{}".format(new_file)
         output, error = self.os_command("tmux  new -d -s {} 'sudo -u {} {}'  ".format(self.rand_string(), new_user, P2))
         output, error = self.os_command(
             " ps -aux | grep -v -e grep -e tmux -e sudo | grep '{}' | awk '{{print $2}}'".format(P2)
