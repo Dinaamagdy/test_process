@@ -157,7 +157,9 @@ class PROCESS(BaseTest):
         self.info("Get zombie processes list [z1] by ps -aux")
         output, error = self.os_command("ps aux | awk '{{ print $8 " " $2 }}' | grep -w Z ")
         z1 = output.decode().splitlines()
+        import ipdb
 
+        ipdb.set_trace()
         self.info("Get zombie processes list [z2] by getDefunctProcesses ")
         z2 = j.sal.process.getDefunctProcesses()
 
@@ -306,20 +308,20 @@ class PROCESS(BaseTest):
 
         self.info("Start process [P2] with new user , gets its PID2")
         new_file = self.rand_string()
-        output, error = self.os_command("touch /root/{}".format(new_file))
+        output, error = self.os_command("touch /home/{}".format(new_file))
         P2 = "tail -f /root/{}".format(new_file)
         output, error = self.os_command("tmux  new -d -s {} 'sudo -u {} {}'  ".format(self.rand_string(), new_user, P2))
         output, error = self.os_command(
-            " ps -aux | grep -v -e grep -e tmux | grep '{}' | awk '{{print $2}}'".format(P1)
+            " ps -aux | grep -v -e grep -e tmux -e sudo | grep '{}' | awk '{{print $2}}'".format(P2)
         )
         PID_2 = int(output.decode())
 
         self.info("kill the process using {}".format(filter))
         if filter == "kill":
-            j.sal.process.kill(PID_1)
+            j.sal.process.kill(PID_2)
 
         elif filter == "killProcessByName":
-            j.sal.process.killProcessByName("/dev/{}".format(new_file))
+            j.sal.process.killProcessByName("/home/{}".format(new_file))
 
         elif filter == "killUserProcesses":
             j.sal.process.killUserProcesses(new_user)
