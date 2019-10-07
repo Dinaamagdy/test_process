@@ -157,9 +157,7 @@ class PROCESS(BaseTest):
         self.info("Get zombie processes list [z1] by ps -aux")
         output, error = self.os_command("ps aux | awk '{{ print $8 " " $2 }}' | grep -w Z ")
         z1 = output.decode().splitlines()
-        import ipdb
-
-        ipdb.set_trace()
+        z1 = list(map(int, z1))
         self.info("Get zombie processes list [z2] by getDefunctProcesses ")
         z2 = j.sal.process.getDefunctProcesses()
 
@@ -332,9 +330,12 @@ class PROCESS(BaseTest):
         output, error = self.os_command(
             " ps -aux | grep -v -e grep -e tmux | grep {} | awk '{{print $2}}'".format("tail")
         )
+        result = output.decode().splitlines()
+        result = list(map(int, result))
+
         if filter == "killall":
-            self.assertFalse(output.decode())
+            self.assertFalse(result)
         else:
-            self.assertIn(PID_1, output.decode().splitlines())
-            self.assertNotIn(PID_2, output.decode().splitlines())
+            self.assertIn(PID_1, result)
+            self.assertNotIn(PID_2, result)
             output, error = self.os_command("kill -9 {} ".format(PID_1))
